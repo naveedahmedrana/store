@@ -29,7 +29,7 @@ export default function Home() {
 
         <div className="relative min-h-[380px] overflow-hidden rounded-xl">
           <img
-            src="/assets/hero-warehouse-DgUZNDmf.jpg"
+            src="/assets/hero-warehouse.jpg"
             alt="Pakistani export warehouse with textiles, footballs and rice"
             width="1600"
             height="800"
