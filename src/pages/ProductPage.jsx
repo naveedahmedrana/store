@@ -2,7 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { BadgeCheck, ChevronRight, Clock, MapPin, MessageSquare, ShieldCheck, ShoppingCart, Star } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import { btn, useDocumentTitle } from "../components/ui";
+import {
+  Button,
+  Dialog,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Textarea,
+  useDocumentTitle,
+} from "../components/ui";
 import { categoryBySlug, formatRs, getSupplier, priceForQty, products } from "../lib";
 import { useStore } from "../store";
 
@@ -48,8 +57,7 @@ export default function ProductPage() {
     else notify("Added to cart", `${qty} ${product.unit}s`);
   }
 
-  function send(event) {
-    event.preventDefault();
+  function send() {
     if (requireUser() || !supplier) return;
     const result = sendMessage({ supplierId: supplier.id, productId: product.id, body });
     if (!result.ok) {
@@ -118,13 +126,20 @@ export default function ProductPage() {
             {belowMoq && <p className="text-xs text-destructive">Minimum order is {product.moq} {product.unit}s.</p>}
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className={btn("cta", "xl")} disabled={belowMoq} onClick={() => add(true)}>Start order</button>
-            <button className={btn("outline-primary", "xl")} disabled={belowMoq} onClick={() => add(false)}>
-              <ShoppingCart className="size-4" /> Add to cart
-            </button>
-            <button className={btn("ghost", "xl")} onClick={() => (requireUser() ? null : setOpen(true))}>
-              <MessageSquare className="size-4" /> Contact supplier
-            </button>
+            <Button variant="cta" size="xl" disabled={belowMoq} onClick={() => add(true)}>
+              Start order
+            </Button>
+            <Button variant="outline-primary" size="xl" disabled={belowMoq} onClick={() => add(false)}>
+              <ShoppingCart /> Add to cart
+            </Button>
+            <Button
+              variant="ghost"
+              size="xl"
+              className="text-primary"
+              onClick={() => (requireUser() ? null : setOpen(true))}
+            >
+              <MessageSquare /> Contact supplier
+            </Button>
           </div>
           <div className="flex items-center gap-2 rounded-xl border bg-card p-4 text-sm">
             <ShieldCheck className="size-5 shrink-0 text-primary" />
@@ -166,7 +181,9 @@ export default function ProductPage() {
               <li className="flex items-center gap-2"><Clock className="size-4" /> {supplier.years} years on store.pk</li>
               <li className="flex items-center gap-2"><Star className="size-4" /> {supplier.rating}/5 rating · {supplier.responseRate}% response</li>
             </ul>
-            <Link to={`/supplier/${supplier.id}`} className={`${btn("outline-primary")} w-full`}>View supplier profile</Link>
+            <Button asChild variant="outline-primary" className="w-full">
+              <Link to={`/supplier/${supplier.id}`}>View supplier profile</Link>
+            </Button>
           </aside>
         )}
       </section>
@@ -180,24 +197,24 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {open && supplier && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-primary-deep/40 p-4" onClick={() => setOpen(false)}>
-          <form onSubmit={send} className="w-full max-w-lg space-y-4 rounded-2xl bg-white p-6 shadow-lift" onClick={(event) => event.stopPropagation()}>
-            <h2 className="text-xl font-bold">Message {supplier.name}</h2>
-            <p className="text-sm text-muted-foreground">Ask about pricing, samples, customisation or delivery.</p>
-            <textarea
-              rows="5"
-              value={body}
-              onChange={(event) => setBody(event.target.value)}
-              placeholder={`Hi, I'm interested in ${qty} ${product.unit}s. Could you share your best price and delivery time to Lahore?`}
-              className="w-full rounded-xl border border-input p-3 text-sm outline-none focus:border-primary"
-            />
-            <div className="flex justify-end gap-2">
-              <button type="button" className={btn("ghost")} onClick={() => setOpen(false)}>Cancel</button>
-              <button className={btn("primary")} disabled={!body.trim()}>Send message</button>
-            </div>
-          </form>
-        </div>
+      {supplier && (
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogHeader>
+            <DialogTitle>Message {supplier.name}</DialogTitle>
+            <DialogDescription>Ask about pricing, samples, customisation or delivery.</DialogDescription>
+          </DialogHeader>
+          <Textarea
+            rows={5}
+            value={body}
+            onChange={(event) => setBody(event.target.value)}
+            placeholder={`Hi, I'm interested in ${qty} ${product.unit}s. Could you share your best price and delivery time to Lahore?`}
+          />
+          <DialogFooter>
+            <Button disabled={!body.trim()} onClick={send}>
+              Send message
+            </Button>
+          </DialogFooter>
+        </Dialog>
       )}
     </div>
   );

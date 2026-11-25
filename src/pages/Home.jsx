@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, BadgeCheck, ChevronRight, FileText, Headphones, ShieldCheck, Truck } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import { CategoryIcon, btn, useDocumentTitle } from "../components/ui";
+import { Button, CategoryIcon, useDocumentTitle } from "../components/ui";
 import { categories, hubs, products, suppliers } from "../lib";
 import { useStore } from "../store";
 
@@ -42,10 +42,12 @@ export default function Home() {
             <p className="text-primary-foreground/80">
               Thousands of verified manufacturers. Wholesale prices in rupees. Delivery to every city.
             </p>
-            <div>
-              <Link to="/products" className={btn("cta", "xl")}>
-                Start sourcing <ArrowRight className="size-4" />
-              </Link>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild variant="cta" size="xl">
+                <Link to="/products">
+                  Start sourcing <ArrowRight />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -57,9 +59,9 @@ export default function Home() {
               <h2 className="text-xl font-bold">Request for Quotation</h2>
               <p className="text-sm text-primary-foreground/75">Tell suppliers what you need and get quotes within 24 hours.</p>
             </div>
-            <Link to="/rfq" className={`${btn("on-dark", "md")} w-fit`}>
-              Post a request
-            </Link>
+            <Button asChild variant="on-dark">
+              <Link to="/rfq">Post a request</Link>
+            </Button>
           </div>
           <WelcomeCard />
         </aside>
@@ -167,8 +169,12 @@ function WelcomeCard() {
         <p className="truncate font-display text-sm font-semibold">Hi, {user.email}</p>
         <p className="mt-1 text-xs text-muted-foreground">Pick up where you left off.</p>
         <div className="mt-4 grid grid-cols-2 gap-2">
-          <Link to="/orders" className={btn("primary", "sm")}>My orders</Link>
-          <Link to="/messages" className={btn("outline-primary", "sm")}>Messages</Link>
+          <Button asChild size="sm">
+            <Link to="/orders">My orders</Link>
+          </Button>
+          <Button asChild size="sm" variant="outline-primary">
+            <Link to="/messages">Messages</Link>
+          </Button>
         </div>
       </div>
     );
@@ -178,8 +184,12 @@ function WelcomeCard() {
       <p className="font-display text-sm font-semibold">Welcome to store.pk</p>
       <p className="mt-1 text-xs text-muted-foreground">Sign in for personalised deals and order tracking.</p>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <Link to="/auth?mode=signup" className={btn("primary", "sm")}>Join free</Link>
-        <Link to="/auth" className={btn("outline-primary", "sm")}>Sign in</Link>
+        <Button asChild size="sm">
+          <Link to="/auth?mode=signup">Join free</Link>
+        </Button>
+        <Button asChild size="sm" variant="outline-primary">
+          <Link to="/auth">Sign in</Link>
+        </Button>
       </div>
     </div>
   );
@@ -191,10 +201,10 @@ function Trust({ to, icon: Icon, title, text }) {
       <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-cta-soft text-cta">
         <Icon className="size-6" />
       </span>
-      <span>
-        <span className="block text-sm font-semibold">{title}</span>
-        <span className="block text-xs font-normal text-muted-foreground">{text}</span>
-      </span>
+      <div>
+        <p className="text-sm font-semibold">{title}</p>
+        <p className="text-xs text-muted-foreground">{text}</p>
+      </div>
     </Link>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BadgeCheck, CircleCheck, Store, Users } from "lucide-react";
-import { FeatureGrid, PageHero, btn, Field, inputClass, useDocumentTitle } from "../components/ui";
+import { BadgeCheck, CircleCheck, MessageSquare, Store, Users } from "lucide-react";
+import { Button, FeatureGrid, Field, Input, PageHero, Textarea, useDocumentTitle } from "../components/ui";
 import { PHONE, categories } from "../lib";
 import { useStore } from "../store";
 
@@ -38,12 +38,14 @@ export default function SellPage() {
         title="Sell wholesale to buyers across Pakistan"
         text="List your products, receive orders and quotation requests from shops, distributors and businesses in every city."
       >
-        <Link to="/seller-verification" className={btn("on-dark", "xl")}>How verification works</Link>
+        <Button asChild variant="on-dark" size="xl">
+          <Link to="/seller-verification">How verification works</Link>
+        </Button>
       </PageHero>
       <FeatureGrid
         items={[
           { icon: <Users className="size-5" />, title: "Nationwide buyers", text: "Reach retailers and distributors from Karachi to Gilgit." },
-          { icon: <MessageIcon />, title: "Direct enquiries", text: "Buyers message you and send quotation requests." },
+          { icon: <MessageSquare className="size-5" />, title: "Direct enquiries", text: "Buyers message you and send quotation requests." },
           { icon: <BadgeCheck className="size-5" />, title: "Verified badge", text: "Stand out with a badge buyers trust." },
           { icon: <Store className="size-5" />, title: "Your own profile", text: "A supplier page showing all your products and ratings." },
         ]}
@@ -54,7 +56,9 @@ export default function SellPage() {
             <CircleCheck className="size-12 text-primary" />
             <h2 className="text-2xl font-bold">Application received</h2>
             <p className="max-w-sm text-sm text-muted-foreground">Thank you! Our team will call you on your mobile number within 2 working days.</p>
-            <Link to="/" className={`${btn("outline-primary")} mt-2`}>Back to home</Link>
+            <Button asChild variant="outline-primary" className="mt-2">
+              <Link to="/">Back to home</Link>
+            </Button>
           </div>
         ) : (
           <form onSubmit={submit} className="space-y-5" noValidate>
@@ -63,13 +67,17 @@ export default function SellPage() {
               <p className="mt-1 text-sm text-muted-foreground">Free to apply. Takes 2 minutes.</p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Company name" error={errors.company_name}><input name="company_name" placeholder="e.g. Sialkot Sports Works" className={inputClass} /></Field>
-              <Field label="Your name" error={errors.contact_name}><input name="contact_name" placeholder="Full name" className={inputClass} /></Field>
-              <Field label="Mobile number" error={errors.phone}><input name="phone" placeholder="0300 1234567" className={inputClass} /></Field>
-              <Field label="Email" error={errors.email}><input name="email" type="email" placeholder="you@company.pk" className={inputClass} /></Field>
-              <Field label="City" error={errors.city}><input name="city" placeholder="Sialkot" className={inputClass} /></Field>
+              <Field label="Company name" error={errors.company_name}><Input name="company_name" placeholder="e.g. Sialkot Sports Works" /></Field>
+              <Field label="Your name" error={errors.contact_name}><Input name="contact_name" placeholder="Full name" /></Field>
+              <Field label="Mobile number" error={errors.phone}><Input name="phone" placeholder="0300 1234567" /></Field>
+              <Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@company.pk" /></Field>
+              <Field label="City" error={errors.city}><Input name="city" placeholder="Sialkot" /></Field>
               <Field label="What do you sell?" error={errors.category}>
-                <select name="category" defaultValue="" className={inputClass}>
+                <select
+                  name="category"
+                  defaultValue=""
+                  className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-primary"
+                >
                   <option value="" disabled>Select category</option>
                   {categories.map((category) => (
                     <option key={category.slug} value={category.slug}>{category.name}</option>
@@ -78,20 +86,14 @@ export default function SellPage() {
               </Field>
             </div>
             <Field label="About your business (optional)">
-              <textarea name="details" rows="4" placeholder="Products, production capacity, years in business…" className={`${inputClass} h-auto py-3`} />
+              <Textarea name="details" rows={4} placeholder="Products, production capacity, years in business…" />
             </Field>
-            <button className={`${btn("cta", "xl")} w-full`} disabled={sending}>{sending ? "Sending…" : "Submit application"}</button>
+            <Button type="submit" variant="cta" size="xl" className="w-full" disabled={sending}>
+              {sending ? "Sending…" : "Submit application"}
+            </Button>
           </form>
         )}
       </section>
     </div>
-  );
-}
-
-function MessageIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
   );
 }

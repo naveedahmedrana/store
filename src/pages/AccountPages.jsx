@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { CircleCheck, MessageSquare, Package } from "lucide-react";
-import { btn, useDocumentTitle } from "../components/ui";
-import { formatRs, getSupplier, payments } from "../lib";
+import { BadgeCheck, CircleCheck, MessageSquare, Package, Send } from "lucide-react";
+import { Button, Textarea, useDocumentTitle } from "../components/ui";
+import { formatRs, getSupplier, payments, products } from "../lib";
 import { useStore } from "../store";
 
 const statusClass = {
@@ -39,7 +39,9 @@ export function OrdersPage() {
         <div className="flex flex-col items-center gap-3 rounded-xl border bg-card py-16 text-center shadow-card">
           <Package className="size-10 text-muted-foreground" />
           <p className="font-display text-lg font-semibold">No orders yet</p>
-          <Link to="/products" className={btn("cta")}>Start sourcing</Link>
+          <Button asChild variant="cta">
+            <Link to="/products">Start sourcing</Link>
+          </Button>
         </div>
       ) : (
         <div className="space-y-4">
@@ -49,7 +51,7 @@ export function OrdersPage() {
                 <span className="font-semibold">{order.orderNumber}</span>
                 <span className="text-muted-foreground">{new Date(order.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
                 <span className="text-muted-foreground">Deliver to {order.deliveryCity}</span>
-                <span className="text-muted-foreground">{payments.find((method) => method.id === order.paymentMethod)?.label}</span>
+                <span className="text-muted-foreground">{payments.find((method) => method.id === order.paymentMethod)?.label ?? order.paymentMethod}</span>
                 <span className={`ml-auto rounded-full px-3 py-0.5 text-xs font-semibold capitalize ${statusClass[order.status] || ""}`}>{order.status}</span>
               </header>
               <ul className="divide-y">
@@ -74,93 +76,126 @@ export function OrdersPage() {
 export function MessagesPage() {
   const { user, messages, sendMessage, notify } = useStore();
   const [params] = useSearchParams();
-  const supplierQuery = params.get("supplier") || "";
+  const supplierParam = params.get("supplier") || undefined;
   const [draft, setDraft] = useState("");
-  const [active, setActive] = useState(supplierQuery);
   useDocumentTitle("Messages — store.pk");
 
-  const mine = useMemo(() => (user ? messages.filter((message) => message.userId === user.id) : []), [messages, user]);
-  const threads = useMemo(() => {
-    const map = new Map();
-    for (const message of mine) {
-      if (!map.has(message.supplierId)) map.set(message.supplierId, []);
-      map.get(message.supplierId).push(message);
-    }
-    if (supplierQuery && !map.has(supplierQuery)) map.set(supplierQuery, []);
-    return [...map.entries()];
-  }, [mine, supplierQuery]);
-
   if (!user) {
-    const redirect = supplierQuery ? `/messages?supplier=${supplierQuery}` : "/messages";
+    const redirect = supplierParam ? `/messages?supplier=${supplierParam}` : "/messages";
     return <Navigate to={`/auth?redirect=${encodeURIComponent(redirect)}`} replace />;
   }
 
-  const current = active || threads[0]?.[0] || "";
-  const thread = mine.filter((message) => message.supplierId === current);
-  const supplier = current ? getSupplier(current) : null;
+  const mine = messages.filter((message) => message.userId === user.id);
+  const newestFirst = [...mine].reverse();
+  const supplierIds = Array.from(new Set(newestFirst.map((message) => message.supplierId)));
+  const activeId = supplierParam ?? supplierIds[0];
+  const active = activeId ? getSupplier(activeId) : undefined;
+  const thread = mine.filter((message) => message.supplierId === activeId);
 
   function send(event) {
     event.preventDefault();
-    if (!current) return;
-    const result = sendMessage({ supplierId: current, body: draft });
+    if (!activeId) return;
+    const result = sendMessage({ supplierId: activeId, body: draft });
     if (!result.ok) {
-      notify("Couldn't send message", result.error);
+      notify("Couldn't send", result.error);
       return;
     }
     setDraft("");
-    notify("Message sent", supplier ? `${supplier.name} usually replies within 24 hours.` : "Sent");
   }
 
+  if (supplierIds.length === 0 && !supplierParam) {
+    return (
+      <div className="container-page flex flex-col items-center gap-3 py-24 text-center">
+        <MessageSquare className="size-12 text-muted-foreground" />
+        <h1 className="text-2xl font-bold">No messages yet</h1>
+        <p className="max-w-sm text-sm text-muted-foreground">
+          Open any product and tap “Contact supplier” to ask about prices, samples or delivery.
+        </p>
+        <Button asChild variant="cta" className="mt-2">
+          <Link to="/products">Browse products</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const listIds = supplierParam && !supplierIds.includes(supplierParam) ? [supplierParam, ...supplierIds] : supplierIds;
+
   return (
-    <div className="container-page space-y-6 pt-8">
-      <h1 className="text-3xl font-bold">Messages</h1>
-      {threads.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-xl border bg-card py-16 text-center shadow-card">
-          <MessageSquare className="size-10 text-muted-foreground" />
-          <p className="font-display text-lg font-semibold">No messages yet</p>
-          <p className="max-w-sm text-sm text-muted-foreground">Contact a supplier from a product page. Your conversations appear here.</p>
-          <Link to="/products" className={btn("cta")}>Browse products</Link>
-        </div>
-      ) : (
-        <div className="grid overflow-hidden rounded-xl border bg-card shadow-card md:grid-cols-[260px_1fr]">
-          <aside className="border-b md:border-b-0 md:border-r">
-            {threads.map(([supplierId, items]) => {
-              const name = getSupplier(supplierId)?.name || "Supplier";
+    <div className="container-page pt-8">
+      <h1 className="mb-6 text-3xl font-bold">Messages</h1>
+      <div className="grid min-h-[520px] overflow-hidden rounded-2xl border bg-card shadow-card md:grid-cols-[280px_1fr]">
+        <aside className="border-b md:border-b-0 md:border-r">
+          {listIds.map((id) => {
+            const supplier = getSupplier(id);
+            const last = newestFirst.find((message) => message.supplierId === id);
+            return (
+              <Link
+                key={id}
+                to={`/messages?supplier=${id}`}
+                className={`flex items-center gap-3 border-b px-4 py-3 ${id === activeId ? "bg-primary-soft" : "hover:bg-muted"}`}
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-deep font-display font-bold text-primary-foreground">
+                  {supplier?.name.charAt(0) ?? "?"}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold">{supplier?.name ?? id}</span>
+                  <span className="block truncate text-xs text-muted-foreground">{last?.body ?? "New conversation"}</span>
+                </span>
+              </Link>
+            );
+          })}
+        </aside>
+        <section className="flex flex-col">
+          {active && (
+            <header className="flex items-center gap-2 border-b px-5 py-3">
+              <p className="font-semibold">{active.name}</p>
+              {active.verified && <BadgeCheck className="size-4 text-verified" />}
+              <span className="text-xs text-muted-foreground">· {active.city} · replies within 24 hours</span>
+            </header>
+          )}
+          <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-5">
+            {thread.length === 0 && <p className="m-auto text-sm text-muted-foreground">Start the conversation below.</p>}
+            {thread.map((message) => {
+              const product = message.productId ? products.find((item) => item.id === message.productId) : undefined;
+              const mineMessage = message.sender === "buyer";
               return (
-                <button
-                  key={supplierId}
-                  onClick={() => setActive(supplierId)}
-                  className={`block w-full px-4 py-3 text-left text-sm ${current === supplierId ? "bg-primary-soft" : "hover:bg-muted"}`}
+                <div
+                  key={message.id}
+                  className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
+                    mineMessage ? "self-end bg-primary text-primary-foreground" : "self-start bg-muted"
+                  }`}
                 >
-                  <span className="block font-semibold">{name}</span>
-                  <span className="line-clamp-1 text-xs text-muted-foreground">{items.at(-1)?.body || "New conversation"}</span>
-                </button>
+                  {product && <p className="mb-1 text-xs opacity-75">Re: {product.title}</p>}
+                  <p className="whitespace-pre-wrap">{message.body}</p>
+                  <p className="mt-1 text-right text-[10px] opacity-60">
+                    {new Date(message.createdAt).toLocaleString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
               );
             })}
-          </aside>
-          <section className="flex min-h-[420px] flex-col">
-            <header className="border-b px-5 py-3 text-sm font-semibold">{supplier?.name || "Conversation"}</header>
-            <div className="flex-1 space-y-3 p-5">
-              {thread.length === 0 && <p className="text-sm text-muted-foreground">Send the first message to this supplier.</p>}
-              {thread.map((message) => (
-                <div key={message.id} className="ml-auto max-w-[80%] rounded-2xl bg-primary-soft px-4 py-2 text-sm">
-                  <p>{message.body}</p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">{new Date(message.createdAt).toLocaleString("en-GB")}</p>
-                </div>
-              ))}
-            </div>
-            <form onSubmit={send} className="flex gap-2 border-t p-4">
-              <input
+          </div>
+          {activeId && (
+            <form onSubmit={send} className="flex items-end gap-2 border-t p-3">
+              <Textarea
+                rows={2}
                 value={draft}
+                maxLength={2000}
                 onChange={(event) => setDraft(event.target.value)}
                 placeholder="Write a message…"
-                className="h-11 flex-1 rounded-full border px-4 text-sm outline-none focus:border-primary"
+                className="resize-none"
               />
-              <button className={btn("primary")} disabled={!draft.trim()}>Send</button>
+              <Button type="submit" size="icon" aria-label="Send" disabled={!draft.trim()}>
+                <Send />
+              </Button>
             </form>
-          </section>
-        </div>
-      )}
+          )}
+        </section>
+      </div>
     </div>
   );
 }

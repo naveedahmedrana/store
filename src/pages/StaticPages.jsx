@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BadgeCheck,
   Building2,
+  ChevronDown,
   Clock,
   FileCheck,
-  Headphones,
   MapPin,
   Package,
   ShieldCheck,
@@ -12,7 +13,7 @@ import {
   Timer,
   Truck,
 } from "lucide-react";
-import { FeatureGrid, PageHero, Steps, btn, useDocumentTitle } from "../components/ui";
+import { Button, FeatureGrid, PageHero, Steps, useDocumentTitle } from "../components/ui";
 
 const routes = [
   { from: "Sialkot", to: "Karachi", days: "2–3 days" },
@@ -32,8 +33,12 @@ export function TradePage() {
         title="Order with confidence from Pakistani suppliers"
         text="Every order placed on store.pk is covered: if the goods don't arrive on time or don't match what was agreed, we help you get your money back."
       >
-        <Link to="/products" className={btn("cta", "xl")}>Start sourcing</Link>
-        <Link to="/help" className={btn("on-dark", "xl")}>Questions? Visit Help centre</Link>
+        <Button asChild variant="cta" size="xl">
+          <Link to="/products">Start sourcing</Link>
+        </Button>
+        <Button asChild variant="on-dark" size="xl">
+          <Link to="/help">Questions? Visit Help centre</Link>
+        </Button>
       </PageHero>
       <FeatureGrid
         items={[
@@ -65,7 +70,9 @@ export function VerifyPage() {
         title="The Verified badge, explained"
         text="Buyers trust suppliers who have been checked. Verified suppliers have shown us their business documents and passed a visit to their factory or warehouse."
       >
-        <Link to="/sell" className={btn("cta", "xl")}>Become a supplier</Link>
+        <Button asChild variant="cta" size="xl">
+          <Link to="/sell">Become a supplier</Link>
+        </Button>
       </PageHero>
       <FeatureGrid
         items={[
@@ -97,7 +104,9 @@ export function LogisticsPage() {
         title="Wholesale delivery to every city in Pakistan"
         text="Suppliers on store.pk ship by road freight and courier partners, door to door, with tracking shared on your order."
       >
-        <Link to="/products" className={btn("cta", "xl")}>Browse products</Link>
+        <Button asChild variant="cta" size="xl">
+          <Link to="/products">Browse products</Link>
+        </Button>
       </PageHero>
       <FeatureGrid
         items={[
@@ -111,7 +120,9 @@ export function LogisticsPage() {
         <h2 className="text-2xl font-bold">Typical transit times</h2>
         <div className="overflow-hidden rounded-xl border bg-card shadow-card">
           <div className="grid grid-cols-3 bg-muted px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            <span>From</span><span>To</span><span>Transit</span>
+            <span>From</span>
+            <span>To</span>
+            <span>Transit</span>
           </div>
           {routes.map((route) => (
             <div key={`${route.from}-${route.to}`} className="grid grid-cols-3 border-t px-5 py-3 text-sm">
@@ -121,7 +132,9 @@ export function LogisticsPage() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground">Transit times are estimates after dispatch and can vary with weather and road conditions.</p>
+        <p className="text-xs text-muted-foreground">
+          Transit times are estimates after dispatch and can vary with weather and road conditions.
+        </p>
       </section>
     </div>
   );
@@ -161,40 +174,71 @@ const faqs = [
   },
 ];
 
+function Accordion({ items }) {
+  const [open, setOpen] = useState("");
+  return (
+    <div className="mt-2">
+      {items.map((item) => {
+        const isOpen = open === item.q;
+        return (
+          <div key={item.q} data-state={isOpen ? "open" : "closed"} className="border-b">
+            <h3 className="flex">
+              <button
+                type="button"
+                aria-expanded={isOpen}
+                data-state={isOpen ? "open" : "closed"}
+                onClick={() => setOpen(isOpen ? "" : item.q)}
+                className="flex flex-1 items-center justify-between py-4 text-sm font-medium cursor-pointer transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180"
+              >
+                {item.q}
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+              </button>
+            </h3>
+            <div role="region" hidden={!isOpen} className="overflow-hidden text-sm text-muted-foreground">
+              <div className="pb-4 pt-0">{item.a}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function HelpPage() {
   useDocumentTitle("Help centre — store.pk");
   return (
-    <div className="container-page space-y-10 pt-8">
+    <div className="container-page space-y-12 pt-8">
       <PageHero tag="Help centre" title="How can we help?" text="Quick answers about buying, paying, delivery and selling on store.pk.">
-        <Link to="/rfq" className={btn("cta", "xl")}>Post a request</Link>
-        <Link to="/sell" className={btn("on-dark", "xl")}>Become a supplier</Link>
+        <Button asChild variant="cta" size="xl">
+          <Link to="/rfq">Post a request</Link>
+        </Button>
+        <Button asChild variant="on-dark" size="xl">
+          <Link to="/sell">Become a supplier</Link>
+        </Button>
       </PageHero>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         {faqs.map((group) => (
-          <section key={group.title} className="rounded-xl border bg-card p-5 shadow-card">
-            <h2 className="text-lg font-bold">{group.title}</h2>
-            <div className="mt-3 divide-y">
-              {group.faqs.map((item) => (
-                <details key={item.q} className="group py-3">
-                  <summary className="cursor-pointer list-none font-medium">{item.q}</summary>
-                  <p className="pt-2 text-sm text-muted-foreground">{item.a}</p>
-                </details>
-              ))}
-            </div>
+          <section key={group.title} className="rounded-xl border bg-card p-6 shadow-card">
+            <h2 className="text-xl font-bold">{group.title}</h2>
+            <Accordion items={group.faqs} />
           </section>
         ))}
       </div>
-      <section className="flex flex-col items-start justify-between gap-4 rounded-xl border bg-card p-6 shadow-card sm:flex-row sm:items-center">
-        <div className="flex items-center gap-3">
-          <Headphones className="size-6 text-primary" />
-          <div>
-            <h2 className="font-sans text-base font-semibold">Still need help with an order?</h2>
-            <p className="text-sm text-muted-foreground">Message your supplier or read how Trade Assurance covers a claim.</p>
-          </div>
+      <section className="flex flex-col items-start gap-4 rounded-xl border bg-cta-soft p-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="font-semibold">Still need help with an order?</p>
+          <p className="text-sm text-muted-foreground">Message the supplier directly from your Messages page.</p>
         </div>
-        <div className="flex gap-2">
-          <Link to="/trade-assurance" className={btn("outline-primary")}>Trade Assurance</Link>
-          <Link to="/messages" className={btn("primary")}>Messages</Link>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild variant="outline-primary">
+            <Link to="/trade-assurance">Trade Assurance</Link>
+          </Button>
+          <Button asChild variant="outline-primary">
+            <Link to="/logistics">Delivery</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/messages">Messages</Link>
+          </Button>
         </div>
       </section>
     </div>
@@ -204,10 +248,22 @@ export function HelpPage() {
 export function NotFound() {
   useDocumentTitle("Page not found — store.pk");
   return (
-    <div className="container-page py-24 text-center">
-      <h1 className="text-3xl font-bold">Page not found</h1>
-      <p className="mt-2 text-muted-foreground">That link is not on store.pk.</p>
-      <Link to="/" className={`${btn("cta")} mt-6`}>Back to home</Link>
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <div className="mt-6">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Go home
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
