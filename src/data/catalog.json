@@ -1,0 +1,366 @@
+{
+  "products": [
+    {
+      "id": "match-football-size-5",
+      "title": "Hand-Stitched PU Leather Match Football, Size 5, Custom Logo",
+      "category": "sports",
+      "image": "/assets/p-football-CCcP2LUx.jpg",
+      "supplierId": "sialkot-sports",
+      "unit": "piece",
+      "moq": 100,
+      "tiers": [
+        {
+          "price": 1450,
+          "minQty": 100
+        },
+        {
+          "price": 1280,
+          "minQty": 500
+        },
+        {
+          "price": 1120,
+          "minQty": 2000
+        }
+      ],
+      "sold": 12400,
+      "leadTimeDays": 21,
+      "specs": {
+        "Size": "5 (official)",
+        "Panels": "32, hand-stitched",
+        "Material": "PU leather, latex bladder",
+        "Customisation": "Logo, colours, packaging"
+      },
+      "description": "Match-grade footballs hand-stitched in Sialkot. Suitable for clubs, academies and promotional orders, with your logo printed on two panels."
+    },
+    {
+      "id": "surgical-instrument-set",
+      "title": "Stainless Steel Basic Surgical Instrument Set, 12 Pieces, CE Marked",
+      "category": "medical",
+      "image": "/assets/p-surgical-BS5qOYig.jpg",
+      "supplierId": "indus-surgical",
+      "unit": "set",
+      "moq": 20,
+      "tiers": [
+        {
+          "price": 8900,
+          "minQty": 20
+        },
+        {
+          "price": 7800,
+          "minQty": 100
+        },
+        {
+          "price": 6950,
+          "minQty": 500
+        }
+      ],
+      "sold": 3150,
+      "leadTimeDays": 15,
+      "specs": {
+        "Finish": "Satin / mirror",
+        "Pieces": "12",
+        "Material": "German stainless steel",
+        "Certification": "CE, ISO 13485"
+      },
+      "description": "Reusable, autoclavable instruments including scissors, forceps, needle holder and scalpel handles. Packed in a zipper pouch."
+    },
+    {
+      "id": "himalayan-salt-lamp",
+      "title": "Natural Himalayan Pink Salt Lamp 2–3 kg with Wooden Base",
+      "category": "minerals",
+      "image": "/assets/p-salt-CXTlUXcH.jpg",
+      "supplierId": "khewra-salt",
+      "unit": "piece",
+      "moq": 50,
+      "tiers": [
+        {
+          "price": 1650,
+          "minQty": 50
+        },
+        {
+          "price": 1390,
+          "minQty": 300
+        },
+        {
+          "price": 1190,
+          "minQty": 1000
+        }
+      ],
+      "sold": 8700,
+      "leadTimeDays": 10,
+      "specs": {
+        "Base": "Sheesham wood",
+        "Cable": "UL / CE dimmer cord",
+        "Origin": "Khewra mines",
+        "Weight": "2–3 kg"
+      },
+      "description": "Hand-carved salt lamps from Khewra, each one unique. Retail gift box available for supermarkets and online sellers."
+    },
+    {
+      "id": "super-kernel-basmati",
+      "title": "Super Kernel Basmati Rice, Extra Long Grain, 25 kg Bag",
+      "category": "food",
+      "image": "/assets/p-rice-Cw4TPx8q.jpg",
+      "supplierId": "punjab-rice",
+      "unit": "bag",
+      "moq": 40,
+      "tiers": [
+        {
+          "price": 9800,
+          "minQty": 40
+        },
+        {
+          "price": 9200,
+          "minQty": 400
+        },
+        {
+          "price": 8650,
+          "minQty": 2000
+        }
+      ],
+      "sold": 21600,
+      "leadTimeDays": 7,
+      "specs": {
+        "Grain": "8.3 mm average",
+        "Broken": "≤ 2%",
+        "Packing": "25 kg PP / jute bag",
+        "Moisture": "≤ 12%"
+      },
+      "description": "Aged Super Kernel basmati from the Kalar belt. Sortex cleaned, available in private label packing for wholesalers."
+    },
+    {
+      "id": "leather-biker-jacket",
+      "title": "Men's Genuine Sheepskin Leather Biker Jacket, OEM Available",
+      "category": "leather",
+      "image": "/assets/p-jacket-CBgWD5kO.jpg",
+      "supplierId": "lahore-leather",
+      "unit": "piece",
+      "moq": 30,
+      "tiers": [
+        {
+          "price": 18500,
+          "minQty": 30
+        },
+        {
+          "price": 16200,
+          "minQty": 150
+        },
+        {
+          "price": 14800,
+          "minQty": 500
+        }
+      ],
+      "sold": 1980,
+      "leadTimeDays": 25,
+      "specs": {
+        "Sizes": "S – 3XL",
+        "Lining": "Polyester",
+        "Colours": "Brown, black, tan",
+        "Leather": "Sheepskin, aniline finish"
+      },
+      "description": "Asymmetric zip biker jacket with YKK zips. Custom labels, sizes and colours for brands and boutiques."
+    },
+    {
+      "id": "cotton-bedsheet-set",
+      "title": "300 Thread Count Cotton Bed Sheet Set, King Size, Export Quality",
+      "category": "textiles",
+      "image": "/assets/p-bedsheets-DCo4ds7H.jpg",
+      "supplierId": "faisal-textile",
+      "unit": "set",
+      "moq": 200,
+      "tiers": [
+        {
+          "price": 3400,
+          "minQty": 200
+        },
+        {
+          "price": 2950,
+          "minQty": 1000
+        },
+        {
+          "price": 2600,
+          "minQty": 5000
+        }
+      ],
+      "sold": 46300,
+      "leadTimeDays": 30,
+      "specs": {
+        "Set": "1 flat, 1 fitted, 2 pillow cases",
+        "Fabric": "100% cotton percale",
+        "Thread count": "300",
+        "Certification": "OEKO-TEX"
+      },
+      "description": "Soft percale bedding woven and stitched in Faisalabad. Plain dyed in 20+ colours, or printed to your design."
+    },
+    {
+      "id": "english-willow-cricket-bat",
+      "title": "Grade 1 English Willow Cricket Bat, Full Size, Handmade",
+      "category": "sports",
+      "image": "/assets/p-cricket-SJvbcZu-.jpg",
+      "supplierId": "sialkot-sports",
+      "unit": "piece",
+      "moq": 25,
+      "tiers": [
+        {
+          "price": 14500,
+          "minQty": 25
+        },
+        {
+          "price": 12900,
+          "minQty": 100
+        },
+        {
+          "price": 11600,
+          "minQty": 300
+        }
+      ],
+      "sold": 4120,
+      "leadTimeDays": 20,
+      "specs": {
+        "Grains": "8–10",
+        "Handle": "Singapore cane, 12-piece",
+        "Weight": "1150–1220 g",
+        "Willow": "Grade 1 English"
+      },
+      "description": "Knocked-in and ready to play. Custom stickers and grip colours available for academies and retailers."
+    },
+    {
+      "id": "hand-knotted-wool-rug",
+      "title": "Hand-Knotted Afghan Wool Rug 4×6 ft, Traditional Pattern",
+      "category": "home-decor",
+      "image": "/assets/p-rug-gAsLGRT_.jpg",
+      "supplierId": "karachi-rugs",
+      "unit": "piece",
+      "moq": 5,
+      "tiers": [
+        {
+          "price": 42000,
+          "minQty": 5
+        },
+        {
+          "price": 38500,
+          "minQty": 20
+        },
+        {
+          "price": 35000,
+          "minQty": 50
+        }
+      ],
+      "sold": 640,
+      "leadTimeDays": 45,
+      "specs": {
+        "Dye": "Vegetable dyes",
+        "Size": "4 × 6 ft",
+        "Knots": "~150 KPSI",
+        "Material": "Hand-spun wool"
+      },
+      "description": "Each rug is hand-knotted by artisans and washed for a soft, lasting finish. Custom sizes on request."
+    },
+    {
+      "id": "sindhri-mango-export",
+      "title": "Fresh Sindhri Mangoes, Export Grade, 5 kg Carton",
+      "category": "agriculture",
+      "image": "/assets/p-mango-X7qa8j23.jpg",
+      "supplierId": "multan-fresh",
+      "unit": "carton",
+      "moq": 100,
+      "tiers": [
+        {
+          "price": 2400,
+          "minQty": 100
+        },
+        {
+          "price": 2150,
+          "minQty": 1000
+        },
+        {
+          "price": 1950,
+          "minQty": 5000
+        }
+      ],
+      "sold": 15800,
+      "leadTimeDays": 3,
+      "specs": {
+        "Count": "10–14 pieces",
+        "Weight": "5 kg net",
+        "Variety": "Sindhri",
+        "Treatment": "Hot water treated"
+      },
+      "description": "Seasonal mangoes from Sindh and southern Punjab, graded and packed for air and sea freight."
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "faisal-textile",
+      "name": "Faisalabad Home Textiles",
+      "city": "Faisalabad",
+      "years": 25,
+      "verified": true,
+      "responseRate": 97,
+      "rating": 4.9
+    },
+    {
+      "id": "indus-surgical",
+      "name": "Indus Surgical Instruments",
+      "city": "Sialkot",
+      "years": 21,
+      "verified": true,
+      "responseRate": 92,
+      "rating": 4.7
+    },
+    {
+      "id": "karachi-rugs",
+      "name": "Karachi Hand-Knotted Rugs",
+      "city": "Karachi",
+      "years": 16,
+      "verified": true,
+      "responseRate": 88,
+      "rating": 4.6
+    },
+    {
+      "id": "khewra-salt",
+      "name": "Khewra Pink Salt Co.",
+      "city": "Jhelum",
+      "years": 9,
+      "verified": true,
+      "responseRate": 89,
+      "rating": 4.6
+    },
+    {
+      "id": "lahore-leather",
+      "name": "Lahore Leather House",
+      "city": "Lahore",
+      "years": 11,
+      "verified": false,
+      "responseRate": 85,
+      "rating": 4.5
+    },
+    {
+      "id": "multan-fresh",
+      "name": "Multan Fresh Exports",
+      "city": "Multan",
+      "years": 7,
+      "verified": false,
+      "responseRate": 90,
+      "rating": 4.4
+    },
+    {
+      "id": "punjab-rice",
+      "name": "Punjab Basmati Mills",
+      "city": "Gujranwala",
+      "years": 18,
+      "verified": true,
+      "responseRate": 94,
+      "rating": 4.7
+    },
+    {
+      "id": "sialkot-sports",
+      "name": "Sialkot Sports Works",
+      "city": "Sialkot",
+      "years": 14,
+      "verified": true,
+      "responseRate": 96,
+      "rating": 4.8
+    }
+  ]
+}
